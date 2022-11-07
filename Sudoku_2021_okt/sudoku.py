@@ -69,9 +69,8 @@ def próbálkozások(lista_végek_nélkül):
         for elem in lista_végek_nélkül[i]:
             if elem != " ":
                 belső_lista.append(elem)
-        print("belső_lista:", belső_lista )
+        # print("belső_lista:", belső_lista )
         próbálkozások.append(belső_lista)
-    # print(próbálkozások)
     return próbálkozások
 
 def adat_kérés(szöveg = "Nincs szöveg !!!"):
@@ -110,6 +109,7 @@ def beadott_adat_ellenőr(sudoku, sor, oszlop, szám):
     sor = int(sor)
     oszlop = int(oszlop)
     adat = sudoku[sor-1][oszlop-1]
+    print("A kiválasztott sor: ", sor, "oszlop: ", oszlop, "a szám: ", szám)
     if adat != "0":
         print("A helyet már kitöltötték." )
         lehet = False
@@ -158,8 +158,15 @@ def játék_interface(fájlnév):
         beadott_adat_ellenőr(sudoku, sor, oszlop, szám)
         választás = input(" [R] => Megadott adatok futtatása        [B] => visszalép a főmenübe:         [bármi] => újra ")
         if választás.capitalize() == "R":
-            próbák = próbálkozások()
-            print(próbák)
+            print("5. feladat ")
+            próbák = próbálkozások(forrás)
+            for adat in próbák:
+                print(adat)
+                szám_r = adat[0]
+                sor_r = adat[1]
+                oszlop_r = adat[2]
+                beadott_adat_ellenőr(sudoku, sor_r, oszlop_r, szám_r)
+            választás = input("[B] => visszalép a főmenübe:         [bármi] => újra ")
         if választás.capitalize() == "B":
             ismétlés = True
 
