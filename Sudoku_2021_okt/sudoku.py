@@ -5,7 +5,7 @@ from time import sleep
 
 fájl_list = ["konnyu.txt", "kozepes.txt", "nehez.txt"]
 választható = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-
+# https://stackabuse.com/how-to-print-colored-text-in-python/
 
 
 def adat_beolvasás(fájlnév):
