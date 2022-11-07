@@ -35,13 +35,29 @@ def sudoku_tábla(lista_végek_nélkül):
     print(sudoku_tábla)
     return sudoku_tábla
 
-def sudoku_megjelenít(sudoku, sor, oszlop, érték):
+def sudoku_üres(sudoku):
+    üres = []
+    for s, sor in enumerate(sudoku):
+        print(s, end = "\n")
+        lista = []
+        for o, elem in  enumerate(sor):
+            logika = False
+            if elem == "0":
+                logika = True
+            lista.append(logika)
+        üres.append(lista)    
+    return üres
+            
+
+
+def sudoku_megjelenít(sudoku, sor, oszlop, érték, üres):
     os.system('cls')
     print("\033[1;34;40m      1   2   3   4   5   6   7   8   9  ")
     print("\033[1;34;40m________________________________________")
     i, j = 0 , 0
     for sors in sudoku:
         i += 1
+        j = 0
         print("\033[1;34;40m", i, "| ", end="")
         for elem in sors:
             j += 1
@@ -50,15 +66,17 @@ def sudoku_megjelenít(sudoku, sor, oszlop, érték):
                 elválasztó = "|"
             else:
                 elválasztó = " "
-            if elem == "0":
+            if üres[i-1][j-1] and elem == "0":
                 print("\033[0;37;43m", elem, elválasztó, end ="")
+            elif üres[i-1][j-1] and elem != "0":
+                print("\033[0;37;42m", elem, elválasztó, end ="")
             else:
                 print("\033[0;37;40m", elem, elválasztó, end ="")
         print("\033[0;37;40m")
         sor_maradék = int(i)%3
         if sor_maradék == 0:
             print("-----------------------------------------")
-    print()
+    print("\033[0;37;40m ")
     print("Táblázat lekérdezés          ", "Választható számok: ", választható )
     print("sor: ", sor, "        oszlop: ", oszlop, "       érték: ", érték)
 
@@ -134,29 +152,48 @@ def beadott_adat_ellenőr(sudoku, sor, oszlop, szám):
                 lehet = False
     if lehet:
         print("A lépés megtehető")
+    return lehet
 
+def lépés_mentés(sudoku, sor, oszlop, szám):
+    sudoku[int(sor)-1][int(oszlop)-1] = szám
+    print("sudoku")
+    sleep(3)
+    return sudoku
 
 
 
 def játék_interface(fájlnév):
     forrás = adat_beolvasás(fájlnév = "konnyu.txt")
     sudoku = sudoku_tábla(forrás)
+    üres = sudoku_üres(sudoku)
+    for i in üres:
+        print(i)
     ismétlés = False
     sor, oszlop, érték = None, None, None
+    sudoku_megjelenít(sudoku, sor, oszlop, érték, üres)
     while ismétlés != True:
-        # próbák = próbálkozások(forrás)
-        sudoku_megjelenít(sudoku, sor, oszlop, érték)
-        sor = adat_kérés("Adja meg egy sor számát!  ")
-        sudoku_megjelenít(sudoku, sor, oszlop, érték)
-        oszlop = adat_kérés("Adja meg egy oszlop számát!  ")
-        sudoku_megjelenít(sudoku, sor, oszlop, érték)
-        print("3. feladat ")
-        hely_ellenőr(sudoku, sor, oszlop)
-        print("4. feladat ")
-        üres_helyek(sudoku)
-        szám = adat_kérés("Adja meg a számot beírandó!  ")
-        beadott_adat_ellenőr(sudoku, sor, oszlop, szám)
-        választás = input(" [R] => Megadott adatok futtatása        [B] => visszalép a főmenübe:         [bármi] => újra ")
+        választás = input(" [R] => Megadott adatok futtatása        [B] => visszalép a főmenübe:         [J] vagy [0] => játék ")
+        if választás.capitalize() == "J" or választás.capitalize() == "0":
+            # sudoku_megjelenít(sudoku, sor, oszlop, érték, üres)
+            sor = adat_kérés("Adja meg egy sor számát!  ")
+            sudoku_megjelenít(sudoku, sor, oszlop, érték, üres)
+            oszlop = adat_kérés("Adja meg egy oszlop számát!  ")
+            sudoku_megjelenít(sudoku, sor, oszlop, érték, üres)
+            print("3. feladat ")
+            hely_ellenőr(sudoku, sor, oszlop)
+            print("4. feladat ")
+            üres_helyek(sudoku)
+            szám = adat_kérés("Adja meg a számot beírandó!  ")
+            lehet = beadott_adat_ellenőr(sudoku, sor, oszlop, szám)
+            if lehet:
+                mentsem = input(" [I] => menti:         [N] => nem menti ")
+                if mentsem.capitalize() == "I":
+                    print("mentése:")
+                    sudoku = lépés_mentés(sudoku, sor, oszlop, szám)
+                    sudoku_megjelenít(sudoku, sor, oszlop, érték, üres)
+            else:
+                print("Nem menthető")
+                sleep(2)
         if választás.capitalize() == "R":
             print("5. feladat ")
             próbák = próbálkozások(forrás)
@@ -166,7 +203,6 @@ def játék_interface(fájlnév):
                 sor_r = adat[1]
                 oszlop_r = adat[2]
                 beadott_adat_ellenőr(sudoku, sor_r, oszlop_r, szám_r)
-            választás = input("[B] => visszalép a főmenübe:         [bármi] => újra ")
         if választás.capitalize() == "B":
             ismétlés = True
 
