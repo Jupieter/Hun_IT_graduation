@@ -1,3 +1,4 @@
+# https://www.informatikatanarok.hu/media/uploads/Informatika_erettsegi/Emelt/e_inf_21okt_fl.pdf
 import os
 print("\033[0;37;40m")
 os.system('cls')
