@@ -126,8 +126,12 @@ def beadott_adat_ellenőr(sudoku, sor, oszlop, szám):
     
     sor_kezdet = (int(sor / 3.3) * 3 )
     oszlop_kezdet = int(oszlop / 3.3) * 3
-    print(sor_kezdet , "sor ", sor_kezdet + 3,  "   |      ",    oszlop_kezdet      ,"oszlop", oszlop_kezdet + 3)
-
+    # print(sor_kezdet , "sor ", sor_kezdet + 3,  "   |      ",    oszlop_kezdet      ,"oszlop", oszlop_kezdet + 3)
+    for sr in range(sor_kezdet, sor_kezdet + 3, 1):
+        for os in range(oszlop_kezdet, oszlop_kezdet + 3, 1):
+            if sudoku[sr][os] == szám:
+                print("Az adott résztáblázatban már szerepel a szám")
+                lehet = False
     if lehet:
         print("A lépés megtehető")
 
@@ -150,9 +154,12 @@ def játék_interface(fájlnév):
         hely_ellenőr(sudoku, sor, oszlop)
         print("4. feladat ")
         üres_helyek(sudoku)
-        szám = adat_kérés("Adja meg a számot!  ")
+        szám = adat_kérés("Adja meg a számot beírandó!  ")
         beadott_adat_ellenőr(sudoku, sor, oszlop, szám)
-        választás = input(" [U] => újra        [B] => visszalép a főmenübe:          ")
+        választás = input(" [R] => Megadott adatok futtatása        [B] => visszalép a főmenübe:         [bármi] => újra ")
+        if választás.capitalize() == "R":
+            próbák = próbálkozások()
+            print(próbák)
         if választás.capitalize() == "B":
             ismétlés = True
 
