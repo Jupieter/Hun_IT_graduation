@@ -156,8 +156,6 @@ def beadott_adat_ellenőr(sudoku, sor, oszlop, szám):
 
 def lépés_mentés(sudoku, sor, oszlop, szám):
     sudoku[int(sor)-1][int(oszlop)-1] = szám
-    print("sudoku")
-    sleep(3)
     return sudoku
 
 
