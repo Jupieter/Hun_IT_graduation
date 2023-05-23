@@ -4,7 +4,7 @@ from time import sleep
 os.system('cls')
 
 def beolvasas(fajlnev="kep.txt"):
-    beolvasni = "4_RGBszinek/" + fajlnev
+    beolvasni = "Forras/4_RGBszinek/" + fajlnev
     forrasfajl = open(beolvasni)
     lista = forrasfajl.readlines()
     lista_végek_nélkül = []
